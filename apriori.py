@@ -1,6 +1,7 @@
 from pdb import set_trace as bp
 from itertools import combinations, chain
 from collections import defaultdict
+from generate_rule import generate_rule
 
 
 def generate_lk_set(item_set, transactions, min_support):
@@ -25,6 +26,7 @@ def generate_lk_set(item_set, transactions, min_support):
 
 
 def apriori(transactions, min_support=0.4, min_confidance=0.15):
+    transactions = [frozenset(t) for t in transactions]
 
     # generate L1 set and C1 set
     item_set = set(frozenset([item]) for trx in transactions for item in trx)
@@ -41,40 +43,15 @@ def apriori(transactions, min_support=0.4, min_confidance=0.15):
         l_set.update(lk_set)
         k += 1
         
-    # generate rules
-    rules = []
-    for m in l_set:
-
-        m_support = l_set[m]
-        # generate all subsets of m excludes m itself
-        subsets = chain(*[combinations(m, i + 1) for i in range(len(m)-1)])
-        subsets = set(frozenset(s) for s in subsets)
-
-        # generate rules that satisfy p -> (m-p) > min_confidance
-        for p in subsets:
-            p_support = l_set[p]
-            confidance = m_support / p_support
-            if confidance > min_confidance:
-                remain_support = l_set[m-p]
-                lift = m_support / (remain_support * p_support)
-                rules.append(
-                    (
-                        (tuple(p), tuple(m-p)), # p -> (m-p)
-                        m_support,
-                        confidance,
-                        lift
-                    )
-                )
-    return rules
+    return generate_rule(l_set, min_confidance)
 
 
 def test_apriori():
     transactions = [
-        (1, 3, 4),
-        (2, 3, 5),
-        (1, 2, 3, 5),
-        (2, 5),
-        (1, 3, 5)
+        [1, 3, 4],
+        [2, 3, 5],
+        [1, 2, 3, 5],
+        [2, 5],
+        [1, 3, 5]
     ]
-    transactions = [frozenset(t) for t in transactions]
     apriori(transactions)

@@ -1,17 +1,21 @@
 from collections import defaultdict
 
 from apriori import apriori
+from fp_growth import fp_growth
 
 
 
 def read_ibm_data(path):
-    d = defaultdict(set)
+    """
+    return a list of list, which each element represent a transaction
+    """
+    d = defaultdict(list)
     with open(path, 'r') as f:
         for l in f.readlines():
             cid, tid, iid = l.split()
-            d[int(tid)].add(int(iid))
-    return [frozenset(v) for v in dict(d).values()]
-
+            d[int(tid)].append(int(iid))
+    return list(list(dict(d).values()))
+    
 
 def read_kaggle_data(path):
     pass
@@ -30,13 +34,19 @@ def write_csv(rules, path):
 
 
 if __name__ == '__main__':
+    min_support = 0.015
+    min_confidance = 0.001
+
     ibm_data = read_ibm_data('inputs/ibm-2021.txt')
 
     # run apriori on ibm data
-    aprior_rules = apriori(ibm_data, min_support=0.02, min_confidance=0.6)
-    write_csv(aprior_rules, 'outputs/ibm-2021-apriori2.csv')
+    rules = apriori(ibm_data, min_support=min_support, min_confidance=min_confidance)
+    write_csv(rules, 'outputs/ibm-2021-apriori.csv')
 
     # run fp-growth on ibm data
+    rules = fp_growth(ibm_data, min_support=min_support, min_confidance=min_confidance)
+    write_csv(rules, 'outputs/ibm-2021-fp_growth.csv')
+
 
 
 
