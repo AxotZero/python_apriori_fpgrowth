@@ -105,7 +105,8 @@ def fp_growth(transactions, min_support=0.4, min_confidance=0.15):
     mine_tree(header_table, min_support_count, freq_item_table, prev_item_set=set())
     # convert support_count to support 
     for k in freq_item_table:
-        freq_item_table[k] /= len(transactions) 
+        freq_item_table[k] /= len(transactions)
+    # bp()
 
     return generate_rule(freq_item_table, min_confidance)
 
