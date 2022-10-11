@@ -1,4 +1,3 @@
-from pdb import set_trace as bp
 from collections import defaultdict
 from generate_rule import generate_rule
 
@@ -87,7 +86,7 @@ def mine_tree(header_table=None, min_support_count=100, freq_item_table={}, prev
             mine_tree(new_header_table, min_support_count, freq_item_table, freq_set)
 
 
-def fp_growth(transactions, min_support=0.4, min_confidance=0.15):
+def fp_growth(transactions, min_support=0.4, min_confidance=0.15, return_rule=True, save_path=None):
     # build base item set table
     item_set_table = {}
     for trx in transactions:
@@ -106,18 +105,8 @@ def fp_growth(transactions, min_support=0.4, min_confidance=0.15):
     # convert support_count to support 
     for k in freq_item_table:
         freq_item_table[k] /= len(transactions)
-    # bp()
 
-    return generate_rule(freq_item_table, min_confidance)
-
-
-def test_fp_growth():
-    transactions = [
-        [1, 3, 4],
-        [2, 3, 5],
-        [1, 2, 3, 5],
-        [2, 5],
-        [1, 3, 5]
-    ]
-    
-    rules = fp_growth(transactions)
+    if return_rule:
+        rules = generate_rule(freq_item_table, min_confidance, save_path)
+        return rules
+    return freq_item_table

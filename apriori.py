@@ -1,5 +1,3 @@
-from pdb import set_trace as bp
-from itertools import combinations, chain
 from collections import defaultdict
 from generate_rule import generate_rule
 
@@ -25,7 +23,7 @@ def generate_lk_set(item_set, transactions, min_support):
     return ret_item_set, lk_set
 
 
-def apriori(transactions, min_support=0.4, min_confidance=0.15):
+def apriori(transactions, min_support=0.4, min_confidance=0.15, return_rule=True, save_path=None):
     transactions = [frozenset(t) for t in transactions]
 
     # generate L1 set and C1 set
@@ -43,15 +41,7 @@ def apriori(transactions, min_support=0.4, min_confidance=0.15):
         l_set.update(lk_set)
         k += 1
         
-    return generate_rule(l_set, min_confidance)
-
-
-def test_apriori():
-    transactions = [
-        [1, 3, 4],
-        [2, 3, 5],
-        [1, 2, 3, 5],
-        [2, 5],
-        [1, 3, 5]
-    ]
-    apriori(transactions)
+    if return_rule:
+        rules = generate_rule(l_set, min_confidance, save_path)
+        return rules
+    return l_set
