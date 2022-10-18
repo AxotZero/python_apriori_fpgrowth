@@ -1,5 +1,4 @@
 from collections import defaultdict
-from generate_rule import generate_rule
 
 
 def generate_lk_set(item_set, transactions, min_support):
@@ -23,7 +22,7 @@ def generate_lk_set(item_set, transactions, min_support):
     return ret_item_set, lk_set
 
 
-def apriori(transactions, min_support=0.4, min_confidance=0.15, return_rule=True, save_path=None):
+def apriori(transactions, min_support=0.4):
     transactions = [frozenset(t) for t in transactions]
 
     # generate L1 set and C1 set
@@ -40,8 +39,5 @@ def apriori(transactions, min_support=0.4, min_confidance=0.15, return_rule=True
         # update frequent set
         l_set.update(lk_set)
         k += 1
-        
-    if return_rule:
-        rules = generate_rule(l_set, min_confidance, save_path)
-        return rules
+
     return l_set

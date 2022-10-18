@@ -16,15 +16,16 @@ def generate_rule(freq_item_table, min_confidance=0.15, save_path=None):
             if confidance > min_confidance:
                 remain_support = freq_item_table[m-p]
                 lift = m_support / (remain_support * p_support)
-                rules.append(
-                    (
-                        p, 
-                        m-p,
-                        m_support,
-                        confidance,
-                        lift
-                    )
-                )
+                rule = [
+                    p, 
+                    m-p,
+                    m_support,
+                    confidance,
+                    lift
+                ]
+                for i in range(2, len(rule)):
+                    rule[i] = round(rule[i], 3)
+                rules.append(rule)
     if save_path:
         write_csv(rules, save_path)
 
@@ -33,7 +34,7 @@ def generate_rule(freq_item_table, min_confidance=0.15, save_path=None):
 
 def write_csv(rules, path):
     with open(path, 'w') as f:
-        f.write('antecedent,consequent,support,confidance,lift\n')
+        f.write('antecedent,consequent,support,confidence,lift\n')
         for ant, con, sup, conf, lift in rules:
             ant_str = '{' + ' '.join([str(i) for i in ant]) + '}'
             con_str = '{' + ' '.join([str(i) for i in con]) + '}'
