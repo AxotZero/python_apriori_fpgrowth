@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
     ## run ibm-2022 data
     min_support = 0.1
-    min_confidance = 0.01
+    min_confidance = 0.1
     generate_rule(apriori(ibm2022_data, min_support), min_confidance, save_path='outputs/ibm-2022-apriori.csv')
     generate_rule(fp_growth(ibm2022_data, min_support), min_confidance, save_path='outputs/ibm-2022-fp_growth.csv')
 
