@@ -1,4 +1,9 @@
+# Usage
+please check `main.py`, `apriori.py`, `fpgrowth.py`, `generate_rule.py`
+
+
 # Report
+please check `analysis.ipynb`
 
 ## Find and answer
 What do you observe in the below 4 scenarios? (For both support and confidence, High and Low are arbitrary choices; you may set them according to your preference)
@@ -14,13 +19,12 @@ What do you observe in the below 4 scenarios? (For both support and confidence, 
 
 ### 選取 `low_support`, `high_support`, `low_confidence`, `high_confidence`
 - 以 quantile 過後的 `support` 與 `confidence` 取值
-    - ![](https://i.imgur.com/FK6Agmq.png =200x)
+    - ![](https://i.imgur.com/FK6Agmq.png)
     - 0.2的位置當作 low, 0.8當作 high，最後得到 threshold
         - low_support(ls): 0.107
         - high_support(hs): 0.152
         - low_confidence(lc): 0.198
         - high_confidence(hc): 0.582
-- 
 
 ### 四種 scenarios
 
@@ -41,6 +45,14 @@ What do you observe in the below 4 scenarios? (For both support and confidence, 
     - confidence 似乎沒啥影響 
     - 只觀察這四種狀況下這種結論可能不太對，不過我有點懶了。
 
+
+## Kaggle Data
+- 資料來源: [kaggle-groceries-dataset](https://www.kaggle.com/datasets/heeraldedhia/groceries-dataset
+- `min_support` = 0.01, `min_confidence` = 0.01 產出 association rules
+    - ![](https://i.imgur.com/7TDAoUS.png)
+- 將各個 columns quantile 來看
+    - ![](https://i.imgur.com/jLqe9Ri.png)
+    - 是偏向 low_support, high_confidence 的 data 呢 ~!
 
 ## 嘗試產出上述四種特性的 data
 ### 產生假資料
@@ -65,13 +77,3 @@ What do you observe in the below 4 scenarios? (For both support and confidence, 
 - 直到最後我依然沒有產生出 high_support, low_confidance 的資料，`-conf` 有調跟沒調一樣
     - 我自己認為，依照兩者的特性，support 越高代表該 item_set 越常出現， confidance 越高，代表兩個 item_set 同時出現的次數越高，若是每個 item_set 都很常出現，那麼他們同時出現的機率也會提高
     - 應證了 ibm-2022 的分析
-    - 花了好幾個小時想找出這種組合，但我最後放棄了
-    
-## Bonus
-- 資料來源: [kaggle-groceries-dataset](https://www.kaggle.com/datasets/heeraldedhia/groceries-dataset
-- `min_support` = 0.01, `min_confidence` = 0.01 產出 association rules
-    - ![](https://i.imgur.com/7TDAoUS.png)
-- 將各個 columns quantile 來看
-    - ![](https://i.imgur.com/jLqe9Ri.png)
-    - 是偏向 low_support, high_confidence 的 data 呢 ~!
-
